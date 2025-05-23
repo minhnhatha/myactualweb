@@ -1,0 +1,14 @@
+@font-face {
+    font-family: "Tiny5";
+    src: url('/static/Tiny5.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+#lag_error{
+    background-image: url("./errorbgbg.jpg") ;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: "Tiny5", sans-serif;
+    font-size: 2vw;
+}
+
