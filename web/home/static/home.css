@@ -1,0 +1,17 @@
+ .fixed-card {
+    width: 15rem;
+}
+.container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+#giohang{
+    color:white;
+    margin-right: 2vw;
+    cursor: pointer;
+}
+#giohang:hover {
+    color: orange;
+}

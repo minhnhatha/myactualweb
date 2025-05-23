@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Hi</h1>
+<h3>Welcome to our shop!</h3>
+{% if use.is_authenticated %}
+  <div class="text-center" id="loglog">
+      <p><a href ="#" id="lglg" onclick="document.getElementById('logout-form').submit(); return false;">Log Out</a></p>
+  </div>
+{% else %}
+  <div class="text-center" id="loglog">
+    <p><a href ="{% url "signin" %}">Log In</a></p>
+  </div>
+{% endif %}
+<form id="logout-form" action="{% url 'logout' %}" method="POST" style="display: none;">
+    {% csrf_token %}
+</form>
+{% endblock content %}

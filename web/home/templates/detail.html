@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .product{background-color: #eee}
+    .brand{font-size: 13px}
+    .act-price{color:blue;font-weight: 700}
+    .dis-price{text-decoration: line-through}
+    .about{font-size: 14px}
+    .color{margin-bottom:10px}
+    label.radio{cursor: pointer}
+    label.radio input{position: absolute;top: 0;left: 0;visibility: hidden;pointer-events: none}
+    label.radio span{
+        padding: 2px 9px;
+        border: 2px solid #ff0000;
+        display: inline-block;
+        color: #ff0000;
+        border-radius: 3px;
+        text-transform: uppercase
+    }
+    label.radio input:checked+span{border-color: #ff0000;background-color: #ff0000;color: #fff}
+    .btn-danger{background-color: #ff0000 !important;border-color: #ff0000 !important}
+    .btn-danger:hover{background-color: #da0606 !important;border-color: #da0606 !important}
+    .btn-danger:focus{box-shadow: none}
+    .cart i{margin-right: 10px}
+</style>
+<div class="container mt-5 mb-5 mx-auto d-block">
+<div class="row d-flex justify-content-center"><div class="col">
+<div class="card"><div class="row">
+<div class="col-md-6">
+    <div class="images p-3">
+        <div class="text-center p-4"> <img id="main-image" src="{{sanpham.anh.url}}" width="250" /> </div>
+        <div class="thumbnail text-center">
+            <img onclick="change_image(this)" src="{{sanpham.anh.url}}" width="70">
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="product p-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <i class="fa fa-long-arrow-left"></i>
+                <a class="ml-1" href = "#" onclick="window.history.back()">Quay lại</a>
+            </div>
+            <i class="fa fa-shopping-cart text-muted"></i>
+        </div>
+        {% load humanize %}
+        <div class="mt-4 mb-3"> <span class="text-uppercase text-muted brand">{{sanpham.loai}}</span>
+            <h5 class="text-uppercase">{{sanpham.ten}}</h5>
+            <div class="price d-flex flex-row align-items-center" style="font-weight: 700;">
+                <span>Giá: <span style="color:blue;">{{sanpham.gia|intcomma}} VNĐ</span></span>
+            </div>
+        </div>
+        <p class="about">
+            {% for item in sanpham.chitiet.splitlines %}
+                {% if item.strip %}
+                    <li>{{ item }}</li>
+                {% endif %}
+            {% endfor %}
+        </p>
+        <div class="cart mt-4 align-items-center">
+            <b>Tình trạng:</b>
+            {% if sanpham.soluong %}
+                <span style="color:green;font-weight: 700;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>
+                  </svg>Còn hàng</span>
+            {% else %}
+                <span style="color:red;font-weight: 700;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                  </svg>Hết hàng</span>
+            {% endif %}
+        </div>
+        <div class="cart mt-4 align-items-center">
+            {% if sanpham.soluong %}
+                <a class="btn btn-danger text-uppercase mr-2 px-4" href="{% url "add" id=sanpham.id %}">Thêm vào giỏ</a>
+            {% else %}
+                <a class="btn btn-danger text-uppercase mr-2 px-4 disabled">Thêm vào giỏ</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</div></div>
+</div></div></div>
+<div class="text-center"><h4 style="color: red;">Một số sản phẩm cùng loại</h4></div>
+<div class="container">
+    {% for item in kind %}
+        <div class="card fixed-card">
+            <img src="{{ item.anh.url }}" class="card-img-top" alt="...">
+            <div class="card-body d-flex flex-column">
+                <h6 class="card-title" style="color: red;">{{item.loai|truncatechars:10}}</h6>
+                <h5 class="card-title">{{ item.ten|truncatechars:32 }}</h5>
+                <div class="flex-grow-1 chitiet-container">
+                    <p class="card-text">{{ item.chitiet|truncatechars:45}}</p>
+                </div>
+                <div class="mt-auto">
+                    {% load humanize %}
+                    <div class="price d-flex flex-row align-items-center" style="font-weight: 700;">
+                        <span>Giá: <span style="color:blue;">{{item.gia|intcomma}} VNĐ</span></span>
+                    </div>
+                    <b>Tình trạng:</b>
+                    {% if item.soluong %}
+                        <span style="color:green;font-weight: 700;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>
+                          </svg>Còn hàng</span>
+                    {% else %}
+                        <span style="color:red;font-weight: 700;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                          </svg>Hết hàng</span>
+                    {% endif %}
+                    <a href="{% url 'detail' pk=item.id %}" class="btn btn-primary mx-auto d-block">Chi tiết</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock content %}
